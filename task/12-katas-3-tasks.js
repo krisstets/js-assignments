@@ -45,7 +45,18 @@ function findStringInSnakingPuzzle(puzzle, searchStr) {
  *    'abc' => 'abc','acb','bac','bca','cab','cba'
  */
 function* getPermutations(chars) {
-    throw new Error('Not implemented');
+    function* rec(str)
+	{
+        if (str.length === chars.length) yield str;
+        else
+		{
+            for (let i = 0; i < chars.length; i++)
+                if (str.indexOf(chars[i]) < 0)
+					yield *rec(str + chars[i]);
+		}
+    }
+    
+    yield *rec('');
 }
 
 
@@ -65,7 +76,19 @@ function* getPermutations(chars) {
  *    [ 1, 6, 5, 10, 8, 7 ] => 18  (buy at 1,6,5 and sell all at 10)
  */
 function getMostProfitFromStockQuotes(quotes) {
-    throw new Error('Not implemented');
+    let result = 0,
+    quotesSorted = quotes.slice(0).sort((a, b) => b - a);
+    while (quotes.length)
+	{
+        while (quotes.indexOf(quotesSorted[0]) < 0)
+            quotesSorted.shift();
+        let inx = quotes.indexOf(quotesSorted[0]);
+        result += quotesSorted[0] * inx;
+        for (let i = 0; i < inx; i++)
+            result -= quotes[i];
+        quotes.splice(0, inx + 1);
+    }
+    return result;
 }
 
 
